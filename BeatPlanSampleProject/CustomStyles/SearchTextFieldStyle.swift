@@ -14,16 +14,13 @@ struct SearchTextFieldStyle: TextFieldStyle {
         configuration
             .padding(10)
             .background(
-                ZStack {
+                ZStack(alignment: .trailing){
                     RoundedRectangle(cornerRadius: 40, style: .continuous)
                         .stroke(SwiftUI.Color.gray.opacity(0.1), lineWidth: 1)
                     if text.isEmpty{
-                        HStack{
-                            Spacer()
                             Image(systemName: "magnifyingglass")
                                 .foregroundStyle(.gray)
                                 .padding(10)
-                        }
                     }
                     
                 }

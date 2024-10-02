@@ -11,7 +11,7 @@ import SwiftUI
 struct BeatPlanSampleProjectApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            CreateBeatView(viewModel: CreateBeatView.ViewModel())
         }
     }
 }

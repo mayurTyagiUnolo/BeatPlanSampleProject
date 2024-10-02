@@ -5,18 +5,20 @@
 //  Created by Mayur  on 25/09/24.
 //  Copyright © 2024 SmartSense. All rights reserved.
 //
-
 import SwiftUI
+import GoogleMaps
 
 extension AddClientView{
+    // List View to add the clients from the list.
     struct ListView: View {
+        @Environment(\.dismiss) var dismiss
         @EnvironmentObject var viewModel: AddClientView.ViewModel
         @Binding var searchedText: String
         @Binding var showFilterSheet: Bool
         
-        
         var body: some View {
             VStack{
+                //Hstack for search and filter
                 HStack(spacing: 5){
                     TextField(text: $searchedText, label: {
                         Text("Search here")
@@ -40,6 +42,7 @@ extension AddClientView{
                 .padding(.vertical, 2)
                 .padding(.horizontal, 10)
                 
+                // List of the clients
                 if !viewModel.filteredClientList.isEmpty{
                     List(viewModel.filteredClientList, id: \.clientID){ client in
                         HStack{
@@ -47,10 +50,10 @@ extension AddClientView{
                                 HStack{
                                     Image(client.employeeID != -2 ? "beatClient" : "beatSite")
                                     Text(client.clientName ?? "--")
-                                        .fontWeight(.semibold)
+                                        .mainTextFont()
                                 }
                                 Text(client.address ?? "No Address found")
-                                    .foregroundStyle(.secondary)
+                                    .subTextFont()
                             }
                             
                             Spacer()
@@ -78,21 +81,87 @@ extension AddClientView{
                     Spacer()
                 }
                 
+                // VStack for the continue button..
                 VStack{
-                    Button("Continue"){
+                    Button{
                         print("client selected -- \(viewModel.selectedClients.count)")
+                        viewModel.clientsAdded(viewModel.selectedClients)
+                        dismiss()
+                    } label: {
+                        Text("Continue")
+                            .frame(maxWidth: .infinity)
+                            .padding()
                     }
-                    .frame(maxWidth: .infinity)
-                    .padding()
                     .background(SwiftUI.Color.blue)
                     .foregroundStyle(SwiftUI.Color.white)
                     .clipShape(RoundedRectangle(cornerRadius: 5))
-                    .buttonStyle(.borderless)
                 }
                 .padding()
                 .background(.white)
                 .compositingGroup()
                 .shadow(color: SwiftUI.Color(.lightGray), radius: 3)
+            }
+            .ignoresSafeArea(.keyboard, edges: .bottom)
+        }
+    }
+}
+
+extension AddClientView{
+    // Map View to add the clients from the map.
+    struct MapView: View{
+        @Environment(\.dismiss) var dismiss
+        @EnvironmentObject var viewModel: AddClientView.ViewModel
+        @Binding var searchedText: String
+        @Binding var showFilterSheet: Bool
+        
+        var body: some View{
+            VStack{
+                // Hstack for the search and filter view
+                HStack(spacing: 5){
+                    TextField(text: $searchedText, label: {
+                        Text("Search here")
+                    })
+                    .textFieldStyle(SearchTextFieldStyle(text: $searchedText))
+                    .onChange(of: searchedText) { newValue in
+                        viewModel.filterClients(for: newValue)
+                    }
+                    Button{
+                        showFilterSheet = true
+                    } label: {
+                        Image("smartFilter")
+                            .padding()
+                            .overlay {
+                                Circle()
+                                    .fill(SwiftUI.Color.gray)
+                                    .opacity(0.1)
+                            }
+                    }
+                }
+                .padding(.vertical, 2)
+                .padding(.horizontal, 10)
+                
+                Spacer() // It will be removed by the mapView
+                
+                // vstack for the continue button..
+                VStack{
+                    Button{
+                        print("client selected -- \(viewModel.selectedClients.count)")
+                        viewModel.clientsAdded(viewModel.selectedClients)
+                        dismiss()
+                    } label: {
+                        Text("Continue")
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                    }
+                    .background(SwiftUI.Color.blue)
+                    .foregroundStyle(SwiftUI.Color.white)
+                    .clipShape(RoundedRectangle(cornerRadius: 5))
+                }
+                .padding()
+                .background(.white)
+                .compositingGroup()
+                .shadow(color: SwiftUI.Color(.lightGray), radius: 3)
+                
             }
             .ignoresSafeArea(.keyboard, edges: .bottom)
         }
@@ -105,16 +174,16 @@ struct AddClientView: View {
     @SwiftUI.State private var searchedText: String = ""
     @SwiftUI.State private var showFilterSheet: Bool = false
    
+    // following dependency injection principle..
     init(viewModel: @autoclosure @escaping () -> ViewModel) {
         print("Add client view init")
         self._viewModel = StateObject(wrappedValue: viewModel())
     }
 
-    
     var body: some View {
         VStack{
             if showMapView{
-                Text("Hello, Map!")
+                MapView(searchedText: $searchedText, showFilterSheet: $showFilterSheet)
             }else{
                 ListView(searchedText: $searchedText, showFilterSheet: $showFilterSheet)
             }
@@ -133,7 +202,6 @@ struct AddClientView: View {
     }
 }
 
-
 #Preview {
-    AddClientView(viewModel: AddClientView.ViewModel(selectedClientsToEdit: [Client(clientName: "mayur", age: 22, address: "unolo", clientID: "1")]))
+    AddClientView(viewModel: AddClientView.ViewModel(preSelectedClients: [Client(clientName: "mayur", age: 22, address: "unolo", clientID: "1")], clientsAdded: {_ in }))
 }

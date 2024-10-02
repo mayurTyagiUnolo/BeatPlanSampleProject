@@ -7,24 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5034FF462CABD8AA0043E8C9 /* AddClientViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5034FF452CABD8AA0043E8C9 /* AddClientViewModel.swift */; };
-		5034FF472CABD8AA0043E8C9 /* AddClientView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5034FF442CABD8AA0043E8C9 /* AddClientView.swift */; };
-		5034FF4E2CABD8ED0043E8C9 /* CustomToggleStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5034FF4B2CABD8ED0043E8C9 /* CustomToggleStyle.swift */; };
-		5034FF4F2CABD8ED0043E8C9 /* CustomBackButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5034FF492CABD8ED0043E8C9 /* CustomBackButton.swift */; };
-		5034FF502CABD8ED0043E8C9 /* SearchTextFieldStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5034FF4C2CABD8ED0043E8C9 /* SearchTextFieldStyle.swift */; };
-		5034FF622CABE6EA0043E8C9 /* Color-Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5034FF612CABE6EA0043E8C9 /* Color-Extension.swift */; };
-		5034FF642CABE8E80043E8C9 /* ColorCode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5034FF632CABE8E80043E8C9 /* ColorCode.swift */; };
+		3A9019372CAC94EB0091163C /* GoogleMaps in Frameworks */ = {isa = PBXBuildFile; productRef = 3A9019362CAC94EB0091163C /* GoogleMaps */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		5034FF332CABD6070043E8C9 /* BeatPlanSampleProject.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = BeatPlanSampleProject.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		5034FF442CABD8AA0043E8C9 /* AddClientView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddClientView.swift; sourceTree = "<group>"; };
-		5034FF452CABD8AA0043E8C9 /* AddClientViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddClientViewModel.swift; sourceTree = "<group>"; };
-		5034FF492CABD8ED0043E8C9 /* CustomBackButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomBackButton.swift; sourceTree = "<group>"; };
-		5034FF4B2CABD8ED0043E8C9 /* CustomToggleStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomToggleStyle.swift; sourceTree = "<group>"; };
-		5034FF4C2CABD8ED0043E8C9 /* SearchTextFieldStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchTextFieldStyle.swift; sourceTree = "<group>"; };
-		5034FF612CABE6EA0043E8C9 /* Color-Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color-Extension.swift"; sourceTree = "<group>"; };
-		5034FF632CABE8E80043E8C9 /* ColorCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorCode.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -40,6 +27,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				3A9019372CAC94EB0091163C /* GoogleMaps in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -50,10 +38,6 @@
 			isa = PBXGroup;
 			children = (
 				5034FF352CABD6070043E8C9 /* BeatPlanSampleProject */,
-				5034FF442CABD8AA0043E8C9 /* AddClientView.swift */,
-				5034FF452CABD8AA0043E8C9 /* AddClientViewModel.swift */,
-				5034FF4A2CABD8ED0043E8C9 /* SomeCommonViews */,
-				5034FF4D2CABD8ED0043E8C9 /* SomeCustomStyles */,
 				5034FF342CABD6070043E8C9 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -64,25 +48,6 @@
 				5034FF332CABD6070043E8C9 /* BeatPlanSampleProject.app */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		5034FF4A2CABD8ED0043E8C9 /* SomeCommonViews */ = {
-			isa = PBXGroup;
-			children = (
-				5034FF492CABD8ED0043E8C9 /* CustomBackButton.swift */,
-			);
-			path = SomeCommonViews;
-			sourceTree = "<group>";
-		};
-		5034FF4D2CABD8ED0043E8C9 /* SomeCustomStyles */ = {
-			isa = PBXGroup;
-			children = (
-				5034FF612CABE6EA0043E8C9 /* Color-Extension.swift */,
-				5034FF4B2CABD8ED0043E8C9 /* CustomToggleStyle.swift */,
-				5034FF4C2CABD8ED0043E8C9 /* SearchTextFieldStyle.swift */,
-				5034FF632CABE8E80043E8C9 /* ColorCode.swift */,
-			);
-			path = SomeCustomStyles;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -105,6 +70,7 @@
 			);
 			name = BeatPlanSampleProject;
 			packageProductDependencies = (
+				3A9019362CAC94EB0091163C /* GoogleMaps */,
 			);
 			productName = BeatPlanSampleProject;
 			productReference = 5034FF332CABD6070043E8C9 /* BeatPlanSampleProject.app */;
@@ -134,6 +100,9 @@
 			);
 			mainGroup = 5034FF2A2CABD6070043E8C9;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				3A9019352CAC94EB0091163C /* XCRemoteSwiftPackageReference "ios-maps-sdk" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 5034FF342CABD6070043E8C9 /* Products */;
 			projectDirPath = "";
@@ -159,13 +128,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5034FF622CABE6EA0043E8C9 /* Color-Extension.swift in Sources */,
-				5034FF4E2CABD8ED0043E8C9 /* CustomToggleStyle.swift in Sources */,
-				5034FF642CABE8E80043E8C9 /* ColorCode.swift in Sources */,
-				5034FF4F2CABD8ED0043E8C9 /* CustomBackButton.swift in Sources */,
-				5034FF502CABD8ED0043E8C9 /* SearchTextFieldStyle.swift in Sources */,
-				5034FF462CABD8AA0043E8C9 /* AddClientViewModel.swift in Sources */,
-				5034FF472CABD8AA0043E8C9 /* AddClientView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -373,6 +335,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		3A9019352CAC94EB0091163C /* XCRemoteSwiftPackageReference "ios-maps-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/googlemaps/ios-maps-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 9.1.1;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		3A9019362CAC94EB0091163C /* GoogleMaps */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 3A9019352CAC94EB0091163C /* XCRemoteSwiftPackageReference "ios-maps-sdk" */;
+			productName = GoogleMaps;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 5034FF2B2CABD6070043E8C9 /* Project object */;
 }

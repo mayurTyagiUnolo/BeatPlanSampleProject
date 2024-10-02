@@ -14,10 +14,11 @@ class Client {
     var employeeID: Int?
     var isSelected: Bool = false
     
-    init(clientName: String, age: Int, address: String, clientID: String) {
+    init(clientName: String, age: Int, address: String, clientID: String, employeeID: Int? = nil) {
         self.clientName = clientName
         self.age = age
         self.address = address
         self.clientID = clientID
+        self.employeeID = employeeID
     }
 }
