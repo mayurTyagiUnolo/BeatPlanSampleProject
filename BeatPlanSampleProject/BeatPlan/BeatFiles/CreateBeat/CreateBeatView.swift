@@ -27,10 +27,40 @@ struct CreateBeatView: View {
             ZStack(alignment: .bottomTrailing){
                 if !viewModel.selectedClientList.isEmpty{
                     List(viewModel.selectedClientList, id: \.clientID){ client in
-                            Text(client.clientName ?? "client name is nil")
+                        VStack(spacing: 0){
+                            HStack{
+                                Text("Beat Name")
+                                    .padding(.horizontal)
+                                    .lineLimit(1)
+                                Spacer()
+                                Text("status")
+                                Image("beatClient")
+                                    .padding(.horizontal)
+                            }
+                            .frame(maxWidth: .infinity, minHeight: 35)
+                            .background(.gray.opacity(0.2))
                             
+                            Text(client.clientName ?? "client name is nil")
+                                .background(.red)
+                            Text(client.clientName ?? "client name is nil")
+                            Text(client.clientName ?? "client name is nil")
+                            Text(client.clientName ?? "client name is nil")
+                            Text(client.clientName ?? "client name is nil")
+                            Text(client.clientName ?? "client name is nil")
+                            Text(client.clientName ?? "client name is nil")
+                            Text(client.clientName ?? "client name is nil")
                         }
-                        .listStyle(.inset)
+                        .background(.green)
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .overlay(content: {
+                            RoundedRectangle(cornerRadius: 10)
+                                .stroke(SwiftUI.Color.gray, lineWidth: 1)
+                        })
+                        .foregroundStyle(.red)
+                        .listRowSeparator(.hidden)
+                        .listRowBackground(SwiftUI.Color.clear)
+                    }
+                    .listStyle(.plain)
                         
                     }else{
                         VStack{
@@ -74,7 +104,6 @@ struct CreateBeatView: View {
         .ignoresSafeArea(.keyboard, edges: .bottom)
         .background(SwiftUI.Color(uiColor: VIEW_BACKGROUND_COLOR))
         .navigationTitle("Create Beat")
-//        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             NavigationLink{
                 // optimize beat code
