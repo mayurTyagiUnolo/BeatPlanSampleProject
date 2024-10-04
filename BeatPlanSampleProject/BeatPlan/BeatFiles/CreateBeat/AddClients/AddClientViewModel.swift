@@ -20,25 +20,24 @@ extension AddClientView{
             }
         }
         
-        init(preSelectedClients: [Client] = [], clientsAdded: @escaping (([Client]) -> Void) ) {
+        init(clientService: ClientService, preSelectedClients: [Client], clientsAdded: @escaping (([Client]) -> Void)) {
             print("init started")
             self.clientsAdded = clientsAdded
             
-            DispatchQueue.global().async {
-                if (Utils.authorisation.clients == 1){
-                    let clientList =  ClientCDHelper.shared.fetchAllObjsInBackground()
+            DispatchQueue.global().async { [weak self] in
+                let clientList = clientService.getClientsInBackground()
+                
                     //switch to main thread due to main thread checker crash when initialize @published property on background thread
                     DispatchQueue.main.async{
-                        self.clientList = clientList
-                        self.filteredClientList = clientList
+                        self?.clientList = clientList
+                        self?.filteredClientList = clientList
                         
                         // Edit Beat case - to select the client when ViewModel initialize
                         for selectedClient in preSelectedClients {
-                            self.toggleSelection(for: selectedClient)
+                            self?.toggleSelection(for: selectedClient)
                         }
                         print("init finally finished")
                     }
-                }
             }
             print("init finished")
         }
@@ -73,3 +72,4 @@ extension AddClientView{
         
     }
 }
+

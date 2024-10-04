@@ -9,9 +9,16 @@ import SwiftUI
 
 @main
 struct BeatPlanSampleProjectApp: App {
+    @State private var isFreshBeat: Bool = true
     var body: some Scene {
         WindowGroup {
-            CreateBeatView(viewModel: CreateBeatView.ViewModel())
+            NavigationStack{
+                if isFreshBeat{
+                    CreateBeatView(viewModel: CreateBeatView.ViewModel(beatName: ""))
+                }else{
+                    CreateBeatView(viewModel: CreateBeatView.ViewModel(beatName: "Beat Name"))
+                }
+            }
         }
     }
 }

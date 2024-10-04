@@ -1,5 +1,5 @@
 //
-//  SearchTextFieldStyle.swift
+//  RoundedTextFieldStyle.swift
 //  BherubabaSample
 //
 //  Created by Mayur Tyagi on 27/09/24.
@@ -7,8 +7,9 @@
 
 import SwiftUI
 
-struct SearchTextFieldStyle: TextFieldStyle {
+struct RoundedTextFieldStyle: TextFieldStyle {
     @Binding var text: String
+    var showSearch = true
     
     func _body(configuration: TextField<Self._Label>) -> some View {
         configuration
@@ -17,10 +18,12 @@ struct SearchTextFieldStyle: TextFieldStyle {
                 ZStack(alignment: .trailing){
                     RoundedRectangle(cornerRadius: 40, style: .continuous)
                         .stroke(SwiftUI.Color.gray.opacity(0.1), lineWidth: 1)
-                    if text.isEmpty{
+                    if showSearch{
+                        if text.isEmpty{
                             Image(systemName: "magnifyingglass")
                                 .foregroundStyle(.gray)
                                 .padding(10)
+                        }
                     }
                     
                 }

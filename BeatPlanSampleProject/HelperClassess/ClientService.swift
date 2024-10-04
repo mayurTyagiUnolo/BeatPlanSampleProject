@@ -1,14 +1,14 @@
 
 import Foundation
 
-class ClientCDHelper{
+class ClientService{
     
-    static let shared = ClientCDHelper()
+    static let shared = ClientService()
     
     init() { }
     
     
-    func fetchAllObjsInBackground() -> [Client]{
+    func getClientsInBackground() -> [Client]{
         var clientArray: [Client] = []
         let client1 = Client(clientName: "mayur", age: 22, address: "unolo", clientID: "1", employeeID: -2)
         let client2 = Client(clientName: "mayur", age: 22, address: "unolo", clientID: "2")

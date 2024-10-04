@@ -8,9 +8,11 @@ import SwiftUI
 
 extension CreateBeatView{
     class ViewModel: ObservableObject{
-        @Published var clientList = [Client]()
+        @Published var beatName: String
+        @Published var selectedClientList = [Client]()
         
-        init() {
+        init(beatName: String) {
+            self.beatName = beatName
             print("create beat View model init")
         }
         
@@ -18,9 +20,8 @@ extension CreateBeatView{
             print("create beat View model deinit")
         }
         
-        func addClients(_ clients: [Client]){
-            print(clients.count)
-            clientList = clients
+        func addClients(_ selectedClients: [Client]){
+            selectedClientList = selectedClients
         }
     }
 }

@@ -6,7 +6,71 @@
 //  Copyright © 2024 SmartSense. All rights reserved.
 //
 import SwiftUI
-import GoogleMaps
+
+extension AddClientView{
+    // Map View to add the clients from the map.
+    struct MapView: View{
+        @Environment(\.dismiss) var dismiss
+        @EnvironmentObject var viewModel: AddClientView.ViewModel
+        @Binding var searchedText: String
+        @Binding var showFilterSheet: Bool
+        
+        var body: some View{
+            VStack(spacing: 0){
+                ZStack(alignment: .top){
+                    
+                    // Implementing Google Map by using UIViewRepresentable protocol because Google Map SDK's "GMSMapView" is a UIKit View. Here GoogleMapView() is a bridge between SwiftUI and UIKit.
+                    GoogleMapView()
+                    
+                    // Hstack for the search and filter view
+                    HStack(spacing: 5){
+                        TextField(text: $searchedText, label: {
+                            Text("Search here")
+                        })
+                        .textFieldStyle(RoundedTextFieldStyle(text: $searchedText))
+                        .onChange(of: searchedText) { newValue in
+                            viewModel.filterClients(for: newValue)
+                        }
+                        Button{
+                            showFilterSheet = true
+                        } label: {
+                            Image("smartFilter")
+                                .padding()
+                                .overlay {
+                                    Circle()
+                                        .fill(SwiftUI.Color.gray)
+                                        .opacity(0.1)
+                                }
+                        }
+                    }
+                    .padding(.vertical, 2)
+                    .padding(.horizontal, 10)
+                }
+                
+                // vstack for the continue button..
+                VStack{
+                    Button{
+                        print("client selected -- \(viewModel.selectedClients.count)")
+                        viewModel.clientsAdded(viewModel.selectedClients)
+                        dismiss()
+                    } label: {
+                        Text("Continue")
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                    }
+                    .background(SwiftUI.Color.blue)
+                    .foregroundStyle(SwiftUI.Color.white)
+                    .clipShape(RoundedRectangle(cornerRadius: 5))
+                }
+                .padding()
+                .background(.white)
+                .compositingGroup()
+                .shadow(color: SwiftUI.Color(.lightGray), radius: 3)
+            }
+            .ignoresSafeArea(.keyboard, edges: .bottom)
+        }
+    }
+}
 
 extension AddClientView{
     // List View to add the clients from the list.
@@ -17,13 +81,13 @@ extension AddClientView{
         @Binding var showFilterSheet: Bool
         
         var body: some View {
-            VStack{
+            VStack(spacing: 0){
                 //Hstack for search and filter
                 HStack(spacing: 5){
                     TextField(text: $searchedText, label: {
                         Text("Search here")
                     })
-                    .textFieldStyle(SearchTextFieldStyle(text: $searchedText))
+                    .textFieldStyle(RoundedTextFieldStyle(text: $searchedText))
                     .onChange(of: searchedText) { newValue in
                         viewModel.filterClients(for: newValue)
                     }
@@ -82,88 +146,15 @@ extension AddClientView{
                 }
                 
                 // VStack for the continue button..
-                VStack{
-                    Button{
-                        print("client selected -- \(viewModel.selectedClients.count)")
-                        viewModel.clientsAdded(viewModel.selectedClients)
-                        dismiss()
-                    } label: {
-                        Text("Continue")
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                    }
-                    .background(SwiftUI.Color.blue)
-                    .foregroundStyle(SwiftUI.Color.white)
-                    .clipShape(RoundedRectangle(cornerRadius: 5))
-                }
-                .padding()
-                .background(.white)
-                .compositingGroup()
-                .shadow(color: SwiftUI.Color(.lightGray), radius: 3)
+                BottomSaveButton(buttonTitle: "Continue", completionHandler: continueButtonTapped)
+                
             }
             .ignoresSafeArea(.keyboard, edges: .bottom)
         }
-    }
-}
-
-extension AddClientView{
-    // Map View to add the clients from the map.
-    struct MapView: View{
-        @Environment(\.dismiss) var dismiss
-        @EnvironmentObject var viewModel: AddClientView.ViewModel
-        @Binding var searchedText: String
-        @Binding var showFilterSheet: Bool
         
-        var body: some View{
-            VStack{
-                // Hstack for the search and filter view
-                HStack(spacing: 5){
-                    TextField(text: $searchedText, label: {
-                        Text("Search here")
-                    })
-                    .textFieldStyle(SearchTextFieldStyle(text: $searchedText))
-                    .onChange(of: searchedText) { newValue in
-                        viewModel.filterClients(for: newValue)
-                    }
-                    Button{
-                        showFilterSheet = true
-                    } label: {
-                        Image("smartFilter")
-                            .padding()
-                            .overlay {
-                                Circle()
-                                    .fill(SwiftUI.Color.gray)
-                                    .opacity(0.1)
-                            }
-                    }
-                }
-                .padding(.vertical, 2)
-                .padding(.horizontal, 10)
-                
-                Spacer() // It will be removed by the mapView
-                
-                // vstack for the continue button..
-                VStack{
-                    Button{
-                        print("client selected -- \(viewModel.selectedClients.count)")
-                        viewModel.clientsAdded(viewModel.selectedClients)
-                        dismiss()
-                    } label: {
-                        Text("Continue")
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                    }
-                    .background(SwiftUI.Color.blue)
-                    .foregroundStyle(SwiftUI.Color.white)
-                    .clipShape(RoundedRectangle(cornerRadius: 5))
-                }
-                .padding()
-                .background(.white)
-                .compositingGroup()
-                .shadow(color: SwiftUI.Color(.lightGray), radius: 3)
-                
-            }
-            .ignoresSafeArea(.keyboard, edges: .bottom)
+        func continueButtonTapped(){
+            viewModel.clientsAdded(viewModel.selectedClients)
+            dismiss()
         }
     }
 }
@@ -203,5 +194,5 @@ struct AddClientView: View {
 }
 
 #Preview {
-    AddClientView(viewModel: AddClientView.ViewModel(preSelectedClients: [Client(clientName: "mayur", age: 22, address: "unolo", clientID: "1")], clientsAdded: {_ in }))
+    AddClientView(viewModel: AddClientView.ViewModel(clientService: ClientService.shared, preSelectedClients: [Client(clientName: "mayur", age: 22, address: "unolo", clientID: "1")], clientsAdded: {_ in }))
 }
