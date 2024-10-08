@@ -9,6 +9,7 @@ import SwiftUI
 
 struct CreateBeatView: View {
     @StateObject private var viewModel: ViewModel
+    @SwiftUI.State private var beatName: String = ""
     
     init(viewModel: @autoclosure @escaping () -> ViewModel) {
         print("create beat view init")
@@ -21,33 +22,29 @@ struct CreateBeatView: View {
                 Text("Enter beat name")
             })
             .textFieldStyle(RoundedTextFieldStyle(text: $viewModel.beatName, showSearch: false))
-            .padding(10)
+            .padding(.horizontal, 16)
+            .padding(.bottom, 5)
             
             // List of the clients
             ZStack(alignment: .bottomTrailing){
                 if !viewModel.selectedClientList.isEmpty{
                     List(viewModel.selectedClientList, id: \.clientID){ client in
                         VStack(alignment: .leading, spacing: 5){
-                            HStack{
+                            HStack(){
                                 Text("Beat Name")
                                     .padding(.horizontal)
                                     .lineLimit(1)
                                     .mainTextFont()
                                 Spacer()
-                                Text("approved")
-                                    .padding(.vertical, 2)
-                                    .padding(.horizontal, 10)
-                                    .background(.green)
-                                    .clipShape(.capsule)
-                                    .subTextFont()
-                                Menu {
-                                    Button("Edit", action: {} )
-                                    Button("Delete", action: {} )
+                                Button{
+                                    
                                 } label: {
-                                    Image("threeDot")
-                                        .padding(.trailing, 5)
+                                    Image(systemName: "trash")
+                                        .foregroundStyle(.red)
+                                        .padding(.horizontal)
                                 }
-
+                                
+                                
                             }
                             .frame(maxWidth: .infinity, minHeight: 25,maxHeight: .infinity)
                             .background(.gray.opacity(0.2))
@@ -60,30 +57,70 @@ struct CreateBeatView: View {
                                 )
                             )
                             
-                            Text("Total Visits: 10")
-                                .padding(.leading)
-                                .font(.footnote)
                             
-                            Text("Created by: Admin")
-                                .padding(.leading)
-                                .padding(.bottom, 5)
-                                .font(.footnote)
-                            
-                            
-                            if false {
-                                VStack(alignment: .leading, spacing: 0){
-                                    Divider()
+                            HStack{
+                                Image(systemName: "pencil")
+                                    .padding(.trailing, 5)
+                                    .font(.footnote)
+                                
+                                Text("Addesss")
+                                    .font(.footnote)
                                     
-                                    
-                                    Text("Remark: Every thing is fine")
-                                        .padding(.leading)
-                                        .padding([.vertical], 10)
+                            }
+                            .padding(.horizontal)
+                            .padding(.vertical, 5)
+                            
+                            HStack{
+                                Picker(selection: $beatName) {
+                                    ForEach(1..<10){_ in 
+                                        Text("beatName")
+                                    }
+                                } label: {
+                                    Text("beatName")
                                         .font(.footnote)
                                 }
+                                .pickerStyle(MenuPickerStyle())
+                                .padding(.horizontal)
+                                
                             }
+                            .frame(maxWidth: .infinity, minHeight: 40)
+                            .background(.gray.opacity(0.2))
+                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                            .overlay(content: {
+                                RoundedRectangle(cornerRadius: 10)
+                                    .stroke(SwiftUI.Color.gray, lineWidth: 1)
+                            })
+                            .padding(.horizontal)
+                            .padding(.bottom, 5)
+
+                            
+                            HStack{
+                                Label("start time", systemImage: "clock")
+                                    .foregroundStyle(.gray)
+                                    .frame(maxWidth: .infinity, minHeight: 40)
+                                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                                    .overlay(content: {
+                                        RoundedRectangle(cornerRadius: 10)
+                                            .stroke(SwiftUI.Color.gray, lineWidth: 1)
+                                    })
+                                
+                                Label("End time", systemImage: "clock")
+                                    .foregroundStyle(.gray)
+                                    .frame(maxWidth: .infinity, minHeight: 40)
+                                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                                    .overlay(content: {
+                                        RoundedRectangle(cornerRadius: 10)
+                                            .stroke(SwiftUI.Color.gray, lineWidth: 1)
+                                    })
+                            }
+                            .padding(.horizontal)
+                            .padding(.bottom, 10)
+
+                            
+                            
+                            
                             
                         }
-                        
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .overlay(content: {
                             RoundedRectangle(cornerRadius: 10)
@@ -91,27 +128,29 @@ struct CreateBeatView: View {
                         })
                         .listRowSeparator(.hidden)
                         .listRowBackground(SwiftUI.Color.clear)
+                        .onTapGesture(perform: {
+                            print("cell tapped")
+                        })
                     }
                     .listStyle(.plain)
+                }else{
+                    VStack{
+                        Spacer()
                         
-                    }else{
-                        VStack{
-                            Spacer()
-                            
-                            NavigationLink("Add Clients/Sites", destination: AddClientView(viewModel: AddClientView.ViewModel(clientService: ClientService.shared, preSelectedClients: viewModel.selectedClientList, clientsAdded: viewModel.addClients)))
-
-                            
-                            
-                            VStack(spacing: 10){
-                                Text("List is empty")
-                                    .font(.system(size: 20, weight: .bold))
-                                Text("Press + button to add visits")
-                                    .foregroundStyle(.secondary)
-                            }
-                            Spacer()
+                        NavigationLink("Add Clients/Sites", destination: AddClientView(viewModel: AddClientView.ViewModel(clientService: ClientService.shared, preSelectedClients: viewModel.selectedClientList, clientsAdded: viewModel.addClients)))
+                        
+                        
+                        
+                        VStack(spacing: 10){
+                            Text("List is empty")
+                                .font(.system(size: 20, weight: .bold))
+                            Text("Press + button to add visits")
+                                .foregroundStyle(.secondary)
                         }
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        Spacer()
                     }
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                }
                 
                 
                 Menu {
@@ -127,7 +166,7 @@ struct CreateBeatView: View {
                         .shadow(radius: 4)
                 }
                 .padding()
-
+                
             }
                 
             
@@ -155,10 +194,3 @@ struct CreateBeatView: View {
         print("save Button pressed")
     }
 }
-
-
-#Preview {
-    CreateBeatView(viewModel: CreateBeatView.ViewModel(beatName: ""))
-}
-
-

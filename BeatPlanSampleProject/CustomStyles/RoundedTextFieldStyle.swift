@@ -17,7 +17,7 @@ struct RoundedTextFieldStyle: TextFieldStyle {
             .background(
                 ZStack(alignment: .trailing){
                     RoundedRectangle(cornerRadius: 40, style: .continuous)
-                        .stroke(SwiftUI.Color.gray.opacity(0.1), lineWidth: 1)
+                        .stroke(SwiftUI.Color.gray, lineWidth: 1)
                     if showSearch{
                         if text.isEmpty{
                             Image(systemName: "magnifyingglass")
