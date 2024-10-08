@@ -9,7 +9,10 @@ import SwiftUI
 extension CreateBeatView{
     class ViewModel: ObservableObject{
         @Published var beatName: String
-        @Published var selectedClientList = [Client]()
+//        @Published var selectedClientList = [Client]()
+        @Published var selectedClientList = ClientService.shared.fetchObjectsToEdit()
+        @Published var selectedVisits = [Visit]()
+        
         
         init(beatName: String) {
             self.beatName = beatName

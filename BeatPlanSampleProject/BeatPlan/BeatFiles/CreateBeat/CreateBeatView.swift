@@ -27,36 +27,68 @@ struct CreateBeatView: View {
             ZStack(alignment: .bottomTrailing){
                 if !viewModel.selectedClientList.isEmpty{
                     List(viewModel.selectedClientList, id: \.clientID){ client in
-                        VStack(spacing: 0){
+                        VStack(alignment: .leading, spacing: 5){
                             HStack{
                                 Text("Beat Name")
                                     .padding(.horizontal)
                                     .lineLimit(1)
+                                    .mainTextFont()
                                 Spacer()
-                                Text("status")
-                                Image("beatClient")
-                                    .padding(.horizontal)
+                                Text("approved")
+                                    .padding(.vertical, 2)
+                                    .padding(.horizontal, 10)
+                                    .background(.green)
+                                    .clipShape(.capsule)
+                                    .subTextFont()
+                                Menu {
+                                    Button("Edit", action: {} )
+                                    Button("Delete", action: {} )
+                                } label: {
+                                    Image("threeDot")
+                                        .padding(.trailing, 5)
+                                }
+
                             }
-                            .frame(maxWidth: .infinity, minHeight: 35)
+                            .frame(maxWidth: .infinity, minHeight: 25,maxHeight: .infinity)
                             .background(.gray.opacity(0.2))
+                            .clipShape(
+                                .rect(
+                                    topLeadingRadius: 10,
+                                    bottomLeadingRadius: 0,
+                                    bottomTrailingRadius: 0,
+                                    topTrailingRadius: 10
+                                )
+                            )
                             
-                            Text(client.clientName ?? "client name is nil")
-                                .background(.red)
-                            Text(client.clientName ?? "client name is nil")
-                            Text(client.clientName ?? "client name is nil")
-                            Text(client.clientName ?? "client name is nil")
-                            Text(client.clientName ?? "client name is nil")
-                            Text(client.clientName ?? "client name is nil")
-                            Text(client.clientName ?? "client name is nil")
-                            Text(client.clientName ?? "client name is nil")
+                            Text("Total Visits: 10")
+                                .padding(.leading)
+                                .font(.footnote)
+                            
+                            Text("Created by: Admin")
+                                .padding(.leading)
+                                .padding(.bottom, 5)
+                                .font(.footnote)
+                            
+                            
+                            if false {
+                                VStack(alignment: .leading, spacing: 0){
+                                    Divider()
+                                    
+                                    
+                                    Text("Remark: Every thing is fine")
+                                        .padding(.leading)
+                                        .padding([.vertical], 10)
+                                        .font(.footnote)
+                                }
+                            }
+                            
                         }
-                        .background(.green)
+                        
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .overlay(content: {
                             RoundedRectangle(cornerRadius: 10)
                                 .stroke(SwiftUI.Color.gray, lineWidth: 1)
                         })
-                        .foregroundStyle(.red)
                         .listRowSeparator(.hidden)
                         .listRowBackground(SwiftUI.Color.clear)
                     }
@@ -65,6 +97,11 @@ struct CreateBeatView: View {
                     }else{
                         VStack{
                             Spacer()
+                            
+                            NavigationLink("Add Clients/Sites", destination: AddClientView(viewModel: AddClientView.ViewModel(clientService: ClientService.shared, preSelectedClients: viewModel.selectedClientList, clientsAdded: viewModel.addClients)))
+
+                            
+                            
                             VStack(spacing: 10){
                                 Text("List is empty")
                                     .font(.system(size: 20, weight: .bold))
@@ -84,7 +121,7 @@ struct CreateBeatView: View {
                     Image(systemName: "plus")
                         .font(.title.weight(.semibold))
                         .padding()
-                        .background(Color.blue)
+                        .background(SwiftUI.Color.blue)
                         .foregroundColor(.white)
                         .clipShape(Circle())
                         .shadow(radius: 4)
@@ -118,6 +155,7 @@ struct CreateBeatView: View {
         print("save Button pressed")
     }
 }
+
 
 #Preview {
     CreateBeatView(viewModel: CreateBeatView.ViewModel(beatName: ""))
