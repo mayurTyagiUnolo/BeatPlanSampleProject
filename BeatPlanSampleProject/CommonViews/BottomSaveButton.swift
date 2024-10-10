@@ -10,6 +10,7 @@ import SwiftUI
 struct BottomSaveButton: View {
     var buttonTitle: String
     var completionHandler: () -> Void
+    var shouldDisable: Bool = false
     
     var body: some View {
         VStack{
@@ -19,8 +20,10 @@ struct BottomSaveButton: View {
                 Text(buttonTitle)
                     .frame(maxWidth: .infinity)
                     .padding()
+                    .background(shouldDisable ? .gray : .blue)
             }
-            .background(SwiftUI.Color.blue)
+            .disabled(shouldDisable)
+            .background(shouldDisable ? .gray : .blue)
             .foregroundStyle(SwiftUI.Color.white)
             .clipShape(RoundedRectangle(cornerRadius: 5))
         }

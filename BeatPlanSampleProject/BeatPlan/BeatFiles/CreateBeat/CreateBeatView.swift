@@ -155,7 +155,7 @@ struct CreateBeatView: View {
                 
                 Menu {
                     NavigationLink("Add Clients/Sites", destination: AddClientView(viewModel: AddClientView.ViewModel(clientService: ClientService.shared, preSelectedClients: viewModel.selectedClientList, clientsAdded: viewModel.addClients)))
-                    NavigationLink("Add Location", destination: AddLocationView() )
+                    NavigationLink("Add Location", destination: AddLocationView(viewModel: AddLocationView.ViewModel(locations: [Utils.visit])))
                 } label: {
                     Image(systemName: "plus")
                         .font(.title.weight(.semibold))

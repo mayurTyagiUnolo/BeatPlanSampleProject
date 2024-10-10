@@ -15,6 +15,8 @@ extension AddClientView{
         @Binding var searchedText: String
         @Binding var showFilterSheet: Bool
         
+        var continueCompletionHandler: () -> Void
+        
         var body: some View{
             VStack(spacing: 0){
                 ZStack(alignment: .top){
@@ -44,25 +46,7 @@ extension AddClientView{
                     .padding(.horizontal, 10)
                 }
                 
-                // vstack for the continue button..
-                VStack{
-                    Button{
-                        print("client selected -- \(viewModel.selectedClients.count)")
-                        viewModel.clientsAdded(viewModel.selectedClients)
-                        dismiss()
-                    } label: {
-                        Text("Continue")
-                            .frame(maxWidth: .infinity)
-                            .padding()
-                    }
-                    .background(SwiftUI.Color.blue)
-                    .foregroundStyle(SwiftUI.Color.white)
-                    .clipShape(RoundedRectangle(cornerRadius: 5))
-                }
-                .padding()
-                .background(.white)
-                .compositingGroup()
-                .shadow(color: SwiftUI.Color(.lightGray), radius: 3)
+                BottomSaveButton(buttonTitle: "Continue", completionHandler: continueCompletionHandler)
             }
             .ignoresSafeArea(.keyboard, edges: .bottom)
         }
@@ -76,6 +60,8 @@ extension AddClientView{
         @EnvironmentObject var viewModel: AddClientView.ViewModel
         @Binding var searchedText: String
         @Binding var showFilterSheet: Bool
+        
+        var continueCompletionHandler: () -> Void
         
         var body: some View {
             VStack(spacing: 0){
@@ -140,20 +126,16 @@ extension AddClientView{
                 }
                 
                 // VStack for the continue button..
-                BottomSaveButton(buttonTitle: "Continue", completionHandler: continueButtonTapped)
+                BottomSaveButton(buttonTitle: "Continue", completionHandler: continueCompletionHandler)
                 
             }
             .ignoresSafeArea(.keyboard, edges: .bottom)
-        }
-        
-        func continueButtonTapped(){
-            viewModel.clientsAdded(viewModel.selectedClients)
-            dismiss()
         }
     }
 }
 
 struct AddClientView: View {
+    @Environment(\.dismiss) var dismiss
     @StateObject private var viewModel: ViewModel
     @SwiftUI.State private var showMapView: Bool = false
     @SwiftUI.State private var searchedText: String = ""
@@ -168,9 +150,9 @@ struct AddClientView: View {
     var body: some View {
         VStack{
             if showMapView{
-                MapView(searchedText: $searchedText, showFilterSheet: $showFilterSheet)
+                MapView(searchedText: $searchedText, showFilterSheet: $showFilterSheet, continueCompletionHandler: continueButtonTapped)
             }else{
-                ListView(searchedText: $searchedText, showFilterSheet: $showFilterSheet)
+                ListView(searchedText: $searchedText, showFilterSheet: $showFilterSheet, continueCompletionHandler: continueButtonTapped)
             }
         }
         .background(SwiftUI.Color(uiColor: VIEW_BACKGROUND_COLOR))
@@ -184,6 +166,11 @@ struct AddClientView: View {
         .sheet(isPresented: $showFilterSheet) {
             SmartFilterView()
         }
+    }
+    
+    func continueButtonTapped(){
+        viewModel.clientsAdded(viewModel.selectedClients)
+        dismiss()
     }
 }
 

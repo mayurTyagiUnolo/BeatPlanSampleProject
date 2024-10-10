@@ -13,4 +13,6 @@ class Utils {
     struct Authorization {
         let clients = 1
     }
+    
+    static let visit = Visit(beatVisitID: UUID().uuidString, visitType: "client", lat: 0, lon: 0, radius: 0, sequence: 1, createdTs: "0", lastModifiedTs: "0")
 }
