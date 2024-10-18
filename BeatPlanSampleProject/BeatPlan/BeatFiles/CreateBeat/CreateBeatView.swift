@@ -21,7 +21,7 @@ struct CreateBeatView: View {
             TextField(text: $viewModel.beatName, label: {
                 Text("Enter beat name")
             })
-            .textFieldStyle(RoundedTextFieldStyle(text: $viewModel.beatName, showSearchIcon: false))
+            .textFieldStyle(RoundedTextFieldStyle(text: viewModel.beatName, showSearchIcon: false))
             .padding(.horizontal, 16)
             .padding(.bottom, 5)
             

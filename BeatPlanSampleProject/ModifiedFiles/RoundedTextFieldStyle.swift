@@ -8,9 +8,10 @@
 import SwiftUI
 
 struct RoundedTextFieldStyle: TextFieldStyle {
-    @Binding var text: String
+    var text: String
     var showSearchIcon = true
-    var innerBackgroundColor: Color = .clear
+    var innerBackgroundColor: SwiftUI.Color = .clear
+    var showBorder: Bool = true
     
     func _body(configuration: TextField<Self._Label>) -> some View {
         configuration
@@ -18,7 +19,7 @@ struct RoundedTextFieldStyle: TextFieldStyle {
             .background(
                 ZStack(alignment: .trailing){
                     RoundedRectangle(cornerRadius: 40, style: .continuous)
-                        .stroke(SwiftUI.Color.gray, lineWidth: 1)
+                        .stroke(showBorder ? SwiftUI.Color.gray : .clear, lineWidth: 1)
                     if showSearchIcon && text.isEmpty{
                         Image(systemName: "magnifyingglass")
                             .foregroundStyle(.gray)
@@ -29,7 +30,7 @@ struct RoundedTextFieldStyle: TextFieldStyle {
             )
             .background(
                 RoundedRectangle(cornerRadius: 40, style: .continuous)
-                    .fill(innerBackgroundColor) // Inner background color
+                    .fill(innerBackgroundColor)
             )
             .padding(.vertical, 5)
     }
@@ -37,5 +38,5 @@ struct RoundedTextFieldStyle: TextFieldStyle {
 
 #Preview {
     TextField("Search", text: .constant(""))
-        .textFieldStyle(RoundedTextFieldStyle(text: .constant("")))
+        .textFieldStyle(RoundedTextFieldStyle(text: ""))
 }

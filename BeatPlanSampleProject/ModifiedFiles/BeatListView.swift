@@ -13,54 +13,50 @@ enum BeatSegmentOptions: String{
     case requested = "Requested"
 }
     
-
 struct BeatListView: View {
-    var segmentOptions: [BeatSegmentOptions] = [.approved, .requested]
-    @SwiftUI.State private var currentSegment: BeatSegmentOptions = .approved
+    @StateObject private var viewModel: ViewModel
     @SwiftUI.State private var searchedText = ""
-    @SwiftUI.State var visitlist = [Visit]()
-    @SwiftUI.State var beat: Beat?
+    
+    var segmentOptions: [String] = [BeatSegmentOptions.approved.rawValue, BeatSegmentOptions.requested.rawValue]
+    @State private var selectedSegmentIndex = 0
     
     
-    
+    init(viewModel: @autoclosure @escaping () -> ViewModel) {
+        self._viewModel = StateObject(wrappedValue: viewModel())
+    }
     
     var body: some View {
         VStack{
-            Picker("What is your favorite color?", selection: $currentSegment) {
-                ForEach(segmentOptions, id: \.self) { selectedOption in
-                    Text(selectedOption.rawValue)
-                }
-            }
-            .pickerStyle(.segmented)
-            .padding(.horizontal, 16)
-            .onChange(of: currentSegment) { newValue in
-                // action on change of segment
-                print("hello \(newValue.rawValue)")
-            }
+            SegmentCustomStyle(selection: $selectedSegmentIndex, options: segmentOptions)
+                .padding(.top, 10)
             
             TextField(text: $searchedText, label: {
                 Text("Search here")
             })
             .padding(.horizontal, 16)
-            .textFieldStyle(RoundedTextFieldStyle(text: searchedText))
+            .textFieldStyle(RoundedTextFieldStyle(text: searchedText, innerBackgroundColor: .gray.opacity(0.2), showBorder: false))
             .onChange(of: searchedText) { newValue in
                 // search logic in view model
             }
             
-            List(1..<10){ client in
-                VStack(alignment: .leading, spacing: 5){
+            List(viewModel.beatList, id: \.beatID){ beat in
+                VStack(alignment: .leading, spacing: 10){
                     HStack{
-                        Text("Beat Name")
+                        Text(beat.beatName)
                             .padding(.horizontal)
                             .lineLimit(1)
                             .mainTextFont()
+                        
                         Spacer()
-                        Text("approved")
+                        
+                        Text(beat.status)
                             .padding(.vertical, 2)
                             .padding(.horizontal, 10)
-                            .background(.green)
+                            .background(.green.opacity(0.2))
+                            .foregroundStyle(.green)
                             .clipShape(.capsule)
-                            .subTextFont()
+                            .font(.footnote)
+                        
                         Menu {
                             Button("Edit", action: {} )
                             Button("Delete", action: {} )
@@ -71,7 +67,7 @@ struct BeatListView: View {
                         
                     }
                     .frame(maxWidth: .infinity, minHeight: 25,maxHeight: .infinity)
-                    .background(.gray.opacity(0.2))
+                    .background(.gray.opacity(0.1))
                     .clipShape(
                         .rect(
                             topLeadingRadius: 10,
@@ -80,63 +76,55 @@ struct BeatListView: View {
                             topTrailingRadius: 10
                         )
                     )
-                    
-                    Text("Total Visits: 10")
-                        .padding(.leading)
-                        .font(.footnote)
-                    
-                    Text("Created by: Admin")
-                        .padding(.leading)
-                        .padding(.bottom, 5)
-                        .font(.footnote)
-                    
-                    
-                    if false {
-                        VStack(alignment: .leading, spacing: 0){
-                            Divider()
-                            
-                            
-                            Text("Remark: Every thing is fine")
+                    VStack(alignment: .leading, spacing: 10){
+                        Text("Total Visits: \(beat.visitList.count)")
+                            .padding(.leading)
+                            .font(.footnote)
+                        
+                        if true{
+                            Text("Created by: Admin")
                                 .padding(.leading)
-                                .padding([.vertical], 10)
                                 .font(.footnote)
                         }
+                        
+                        
+                        if true {
+                            VStack(alignment: .leading, spacing: 0){
+                                Divider()
+                                
+                                Text("Remark: Every thing is fine")
+                                    .padding(.leading)
+                                    .padding(.top, 10)
+                                    .font(.footnote)
+                            }
+                        }
                     }
+                    .padding(.bottom, 10)
                     
                 }
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .overlay(content: {
                     RoundedRectangle(cornerRadius: 10)
-                        .stroke(SwiftUI.Color.gray, lineWidth: 1)
+                        .stroke(SwiftUI.Color.gray.opacity(0.2), lineWidth: 0.5)
                 })
                 .listRowSeparator(.hidden)
                 .listRowBackground(SwiftUI.Color.clear)
             }
             .listStyle(.plain)
-            .listRowSpacing(10)
-            
+            .listRowSpacing(3)
             
         }
-        .navigationTitle("Beat List")
+        .navigationTitle("Beats")
         .navigationBarTitleDisplayMode(.inline)
-        .toolbar {
-            NavigationLink{
+        .toolbar{
+            NavigationLink("Create Beat"){
                 CreateBeatView(viewModel: CreateBeatView.ViewModel(beatCDHelperObj: BeatCDHelper.shared))
-                
-            } label: {
-                Text("Create Beat")
-                
-            }
-            
-            NavigationLink{
-                CreateBeatView(viewModel: CreateBeatView.ViewModel(beat: beat, beatCDHelperObj: BeatCDHelper.shared))
-                
-            } label: {
-                Text("Edit Beat")
-                
             }
         }
     }
 }
 
 
+#Preview {
+    BeatListView(viewModel: BeatListView.ViewModel(beatCDHelperObj: BeatCDHelper.shared))
+}

@@ -13,11 +13,7 @@ struct BeatPlanSampleProjectApp: App {
     var body: some Scene {
         WindowGroup {
             NavigationStack{
-                if isFreshBeat{
-                    CreateBeatView(viewModel: CreateBeatView.ViewModel(beatName: ""))
-                }else{
-                    CreateBeatView(viewModel: CreateBeatView.ViewModel(beatName: "Beat Name"))
-                }
+                BeatListView(viewModel: BeatListView.ViewModel(beatCDHelperObj: BeatCDHelper.shared))
             }
         }
     }

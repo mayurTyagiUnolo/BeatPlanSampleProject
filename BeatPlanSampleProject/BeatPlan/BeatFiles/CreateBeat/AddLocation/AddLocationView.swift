@@ -38,7 +38,7 @@ struct AddLocationView: View {
                 TextField(text: $searchedText, label: {
                     Text("Search here")
                 })
-                .textFieldStyle(RoundedTextFieldStyle(text: $searchedText, innerBackgroundColor: .white))
+                .textFieldStyle(RoundedTextFieldStyle(text: searchedText, innerBackgroundColor: .white))
                 .onChange(of: searchedText) { newValue in
                     //                viewModel.filterClients(for: newValue)
                 }
