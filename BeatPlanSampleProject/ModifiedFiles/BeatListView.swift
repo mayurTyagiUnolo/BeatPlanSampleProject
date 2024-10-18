@@ -12,11 +12,17 @@ enum BeatSegmentOptions: String{
     case approved = "Approved"
     case requested = "Requested"
 }
+    
 
 struct BeatListView: View {
     var segmentOptions: [BeatSegmentOptions] = [.approved, .requested]
     @SwiftUI.State private var currentSegment: BeatSegmentOptions = .approved
     @SwiftUI.State private var searchedText = ""
+    @SwiftUI.State var visitlist = [Visit]()
+    @SwiftUI.State var beat: Beat?
+    
+    
+    
     
     var body: some View {
         VStack{
@@ -36,7 +42,7 @@ struct BeatListView: View {
                 Text("Search here")
             })
             .padding(.horizontal, 16)
-            .textFieldStyle(RoundedTextFieldStyle(text: $searchedText))
+            .textFieldStyle(RoundedTextFieldStyle(text: searchedText))
             .onChange(of: searchedText) { newValue in
                 // search logic in view model
             }
@@ -107,6 +113,7 @@ struct BeatListView: View {
                 .listRowBackground(SwiftUI.Color.clear)
             }
             .listStyle(.plain)
+            .listRowSpacing(10)
             
             
         }
@@ -114,20 +121,22 @@ struct BeatListView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             NavigationLink{
-                CreateBeatView(viewModel: CreateBeatView.ViewModel(beatName: ""))
+                CreateBeatView(viewModel: CreateBeatView.ViewModel(beatCDHelperObj: BeatCDHelper.shared))
+                
             } label: {
                 Text("Create Beat")
+                
             }
             
             NavigationLink{
-                CreateBeatView(viewModel: CreateBeatView.ViewModel(beatName: "Beat Name"))
+                CreateBeatView(viewModel: CreateBeatView.ViewModel(beat: beat, beatCDHelperObj: BeatCDHelper.shared))
+                
             } label: {
                 Text("Edit Beat")
+                
             }
         }
     }
 }
 
-#Preview {
-    BeatListView()
-}
+
