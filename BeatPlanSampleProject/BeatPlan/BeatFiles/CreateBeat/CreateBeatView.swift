@@ -28,14 +28,16 @@ struct CreateBeatView: View {
             // List of the clients
             ZStack(alignment: .bottomTrailing){
                 if !viewModel.beat.visitList.isEmpty{
-                    List(viewModel.beat.visitList, id: \.beatVisitID){ client in
+                    List(viewModel.beat.visitList, id: \.beatVisitID){ visit in
                         VStack(alignment: .leading, spacing: 5){
                             HStack(){
-                                Text("Beat Name")
+                                Text(visit.visitName)
                                     .padding(.horizontal)
                                     .lineLimit(1)
                                     .mainTextFont()
+                                
                                 Spacer()
+                                
                                 Button{
                                     
                                 } label: {
@@ -44,71 +46,65 @@ struct CreateBeatView: View {
                                         .padding(.horizontal)
                                 }
                             }
-                            .frame(maxWidth: .infinity, minHeight: 25,maxHeight: .infinity)
-                            .background(.gray.opacity(0.2))
-                            .clipShape(
-                                .rect(
-                                    topLeadingRadius: 10,
-                                    bottomLeadingRadius: 0,
-                                    bottomTrailingRadius: 0,
-                                    topTrailingRadius: 10
-                                )
-                            )
+                            .padding(.vertical, 5)
 
-                            HStack{
-                                Image(systemName: "pencil")
+                            HStack(){
+                                Image("beatLocation")
                                     .padding(.trailing, 5)
+                                    .padding(.leading)
                                     .font(.footnote)
                                 
-                                Text("Addesss")
+                                Text(visit.visitAddress)
                                     .font(.footnote)
                                 
                             }
-                            .padding(.horizontal)
-                            .padding(.vertical, 5)
+                            .padding(.bottom, 5)
                             
-                            //                            HStack{
-                            //                                Picker(selection: $beatName) {
-                            //                                    ForEach(1..<10){_ in
-                            //                                        Text("beatName")
-                            //                                    }
-                            //                                } label: {
-                            //                                    Text("beatName")
-                            //                                        .font(.footnote)
-                            //                                }
-                            //                                .pickerStyle(MenuPickerStyle())
-                            //                                .padding(.horizontal)
-                            //
-                            //                            }
+//                            HStack{
+//                                Picker(selection: $viewModel.beat.visitList[viewModel.beat.visitList.firstIndex(where: { $0.beatVisitID == visit.beatVisitID })!].taskType) {
+//                                    ForEach(Utils.getCustomTask(), id: \.self){ task in
+//                                        Text(task)
+//                                    }
+//                                } label: {
+//                                    Text("Select Task")
+//                                        .font(.footnote)
+//                                }
+//                                .accentColor(.black)
+//                                .pickerStyle(MenuPickerStyle())
+//                                .padding(.horizontal)
+//                                
+//                            }
                             .frame(maxWidth: .infinity, minHeight: 40)
-                            .background(.gray.opacity(0.2))
-                            .clipShape(RoundedRectangle(cornerRadius: 10))
+                            .background(.gray.opacity(0.1))
+                            .clipShape(RoundedRectangle(cornerRadius: 5))
                             .overlay(content: {
-                                RoundedRectangle(cornerRadius: 10)
-                                    .stroke(SwiftUI.Color.gray, lineWidth: 1)
+                                RoundedRectangle(cornerRadius: 5)
+                                    .stroke(SwiftUI.Color.gray.opacity(0.2), lineWidth: 1)
                             })
                             .padding(.horizontal)
                             .padding(.bottom, 5)
                             
-                            
                             HStack{
                                 Label("start time", systemImage: "clock")
-                                    .foregroundStyle(.gray)
                                     .frame(maxWidth: .infinity, minHeight: 40)
-                                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                                    .background(.gray.opacity(0.1))
+                                    .foregroundStyle(.gray)
+                                    .clipShape(RoundedRectangle(cornerRadius: 5))
                                     .overlay(content: {
-                                        RoundedRectangle(cornerRadius: 10)
-                                            .stroke(SwiftUI.Color.gray, lineWidth: 1)
+                                        RoundedRectangle(cornerRadius: 5)
+                                            .stroke(SwiftUI.Color.gray.opacity(0.2), lineWidth: 1)
                                     })
                                 
                                 Label("End time", systemImage: "clock")
                                     .foregroundStyle(.gray)
                                     .frame(maxWidth: .infinity, minHeight: 40)
-                                    .clipShape(RoundedRectangle(cornerRadius: 10))
+                                    .background(.gray.opacity(0.1))
+                                    .clipShape(RoundedRectangle(cornerRadius: 5))
                                     .overlay(content: {
-                                        RoundedRectangle(cornerRadius: 10)
-                                            .stroke(SwiftUI.Color.gray, lineWidth: 1)
+                                        RoundedRectangle(cornerRadius: 5)
+                                            .stroke(SwiftUI.Color.gray.opacity(0.2), lineWidth: 1)
                                     })
+                                
                             }
                             .padding(.horizontal)
                             .padding(.bottom, 10)
@@ -116,7 +112,7 @@ struct CreateBeatView: View {
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .overlay(content: {
                             RoundedRectangle(cornerRadius: 10)
-                                .stroke(SwiftUI.Color.gray, lineWidth: 1)
+                                .stroke(SwiftUI.Color.gray.opacity(0.2), lineWidth: 1)
                         })
                         .listRowSeparator(.hidden)
                         .listRowBackground(SwiftUI.Color.clear)
@@ -192,6 +188,7 @@ struct CreateBeatView: View {
                     .transition(.scale.combined(with: .opacity))
                 }
             }
+            
             BottomSaveButton(buttonTitle: "Save", completionHandler: viewModel.saveButtonTapped, shouldDisable: viewModel.saveBtnShouldBeDisabled())
         }
         .ignoresSafeArea(.keyboard, edges: .bottom)
