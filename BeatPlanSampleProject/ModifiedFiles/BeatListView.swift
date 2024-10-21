@@ -15,11 +15,8 @@ enum BeatSegmentOptions: String{
     
 struct BeatListView: View {
     @StateObject private var viewModel: ViewModel
-    @SwiftUI.State private var searchedText = ""
     
     var segmentOptions: [String] = [BeatSegmentOptions.approved.rawValue, BeatSegmentOptions.requested.rawValue]
-    @State private var selectedSegmentIndex = 0
-    
     
     init(viewModel: @autoclosure @escaping () -> ViewModel) {
         self._viewModel = StateObject(wrappedValue: viewModel())
@@ -27,19 +24,16 @@ struct BeatListView: View {
     
     var body: some View {
         VStack{
-            SegmentCustomStyle(selection: $selectedSegmentIndex, options: segmentOptions)
+            SegmentCustomStyle(selection: $viewModel.selectedSegmentIndex, options: segmentOptions)
                 .padding(.top, 10)
             
-            TextField(text: $searchedText, label: {
+            TextField(text: $viewModel.searchedText, label: {
                 Text("Search here")
             })
             .padding(.horizontal, 16)
-            .textFieldStyle(RoundedTextFieldStyle(text: searchedText, innerBackgroundColor: .gray.opacity(0.2), showBorder: false))
-            .onChange(of: searchedText) { newValue in
-                // search logic in view model
-            }
+            .textFieldStyle(RoundedTextFieldStyle(text: viewModel.searchedText, innerBackgroundColor: .gray.opacity(0.2), showBorder: false))
             
-            List(viewModel.beatList, id: \.beatID){ beat in
+            List(viewModel.filteredBeatList, id: \.beatID){ beat in
                 VStack(alignment: .leading, spacing: 10){
                     HStack{
                         Text(beat.beatName)
@@ -49,7 +43,7 @@ struct BeatListView: View {
                         
                         Spacer()
                         
-                        Text(beat.status)
+                        Text("status")
                             .padding(.vertical, 2)
                             .padding(.horizontal, 10)
                             .background(.green.opacity(0.2))
@@ -66,7 +60,10 @@ struct BeatListView: View {
                         }
                         
                     }
-                    .frame(maxWidth: .infinity, minHeight: 25,maxHeight: .infinity)
+//                    .frame(maxWidth: .infinity, minHeight: 40)
+                    .frame(maxWidth: .infinity, minHeight: 25, maxHeight: .infinity)
+//                    .padding(.vertical, 8)
+//                    .frame(maxWidth: .infinity)
                     .background(.gray.opacity(0.1))
                     .clipShape(
                         .rect(
@@ -76,6 +73,7 @@ struct BeatListView: View {
                             topTrailingRadius: 10
                         )
                     )
+                    
                     VStack(alignment: .leading, spacing: 10){
                         Text("Total Visits: \(beat.visitList.count)")
                             .padding(.leading)
@@ -88,14 +86,16 @@ struct BeatListView: View {
                         }
                         
                         
-                        if true {
+                        if false{
                             VStack(alignment: .leading, spacing: 0){
                                 Divider()
                                 
-                                Text("Remark: Every thing is fine")
+                                Text("Remark: Every Remark: Every thing is fine.Every Remark: Every thing is fine.Every Remark: Every thing is fine.Every Remark: Every thing is fine.Every Remark: Every thing is fine.Every Remark: Every thing is fine.Every Remark: Every thing is fine.Every Remark: Every thing is fine.Every Remark: Every thing is fine.Every Remark: Every thing is fine.Every Remark: Every thing is fine.Every Remark: Every thing is fine.Every Remark: Every thing is fine.Every Remark: Every thing is fine.Every Remark: Every thing is fine.Every Remark: Every thing is fine.Every Remark: Every thing is fine.Every Remark: Every thing is fine.Every Remark: Every thing is fine.Every Remark: Every thing is fine.")
+//                                Text("Remark: Every Remark: Every thing is fine.")
                                     .padding(.leading)
                                     .padding(.top, 10)
                                     .font(.footnote)
+                                    .frame(maxHeight: .infinity)
                             }
                         }
                     }
@@ -105,7 +105,7 @@ struct BeatListView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
                 .overlay(content: {
                     RoundedRectangle(cornerRadius: 10)
-                        .stroke(SwiftUI.Color.gray.opacity(0.2), lineWidth: 0.5)
+                        .stroke(SwiftUI.Color.gray.opacity(0.3), lineWidth: 1)
                 })
                 .listRowSeparator(.hidden)
                 .listRowBackground(SwiftUI.Color.clear)
@@ -114,16 +114,16 @@ struct BeatListView: View {
             .listRowSpacing(3)
             
         }
+        .background(SwiftUI.Color(uiColor: VIEW_BACKGROUND_COLOR))
         .navigationTitle("Beats")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar{
             NavigationLink("Create Beat"){
-                CreateBeatView(viewModel: CreateBeatView.ViewModel(beatCDHelperObj: BeatCDHelper.shared))
+//                CreateBeatView(viewModel: CreateBeatView.ViewModel(beatCDHelperObj: BeatCDHelper.shared))
             }
         }
     }
 }
-
 
 #Preview {
     BeatListView(viewModel: BeatListView.ViewModel(beatCDHelperObj: BeatCDHelper.shared))

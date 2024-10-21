@@ -14,5 +14,7 @@ class Utils {
         let clients = 1
     }
     
-    static let visit = Visit(beatVisitID: UUID().uuidString, visitType: "client", lat: 0, lon: 0, radius: 0, sequence: 1, createdTs: "0", lastModifiedTs: "0")
+    static let visit = Visit(beatVisitID: UUID().uuidString, visitType: 1, visitAddress: "addess", visitName: "visit name", lat: 1, lon: 1, radius: 11, clientID: UUID().uuidString, startTime: "", endTime: "", taskType: "", sequence: 1, isDeleted: 0, mainOrStaged: 1, createdTs: "", lastModifiedTs: "")
+    
+    static var beatApprovalRequired: Bool = true
 }
