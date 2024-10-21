@@ -92,7 +92,7 @@ struct AddLocationView: View {
 
 #Preview {
     
-    AddLocationView(viewModel: AddLocationView.ViewModel(locations: [Utils.visit]))
+    AddLocationView(viewModel: AddLocationView.ViewModel(locations: Utils.visit))
 }
 
 

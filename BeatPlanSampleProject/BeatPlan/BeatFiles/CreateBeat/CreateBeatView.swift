@@ -39,12 +39,18 @@ struct CreateBeatView: View {
                                 Spacer()
                                 
                                 Button{
-                                    
+                                    print("Hello")
+                                    viewModel.showDeleteConfirmation = true
+                                    viewModel.visitToDelete = visit
                                 } label: {
                                     Image(systemName: "trash")
                                         .foregroundStyle(.red)
                                         .padding(.horizontal)
+                                        .background(.green)
                                 }
+                                .background(.purple)
+                                .buttonStyle(.plain)
+                                
                             }
                             .padding(.vertical, 5)
 
@@ -116,9 +122,9 @@ struct CreateBeatView: View {
                         })
                         .listRowSeparator(.hidden)
                         .listRowBackground(SwiftUI.Color.clear)
-                        .onTapGesture(perform: {
-                            print("cell tapped")
-                        })
+//                        .onTapGesture(perform: {
+//                            print("cell tapped")
+//                        })
                     }
                     .listStyle(.plain)
                 }else{
@@ -190,6 +196,14 @@ struct CreateBeatView: View {
             }
             
             BottomSaveButton(buttonTitle: "Save", completionHandler: viewModel.saveButtonTapped, shouldDisable: viewModel.saveBtnShouldBeDisabled())
+        }
+        .alert("Delete Confirmation", isPresented: $viewModel.showDeleteConfirmation, presenting: viewModel.visitToDelete) { item in
+            Button("Delete", role: .destructive) {
+                viewModel.deleteVisit(visit: item)
+            }
+            Button("Cancel", role: .cancel) { }
+        } message: { item in
+            Text("Are you sure you want to delete \(item.visitName)?")
         }
         .ignoresSafeArea(.keyboard, edges: .bottom)
         .background(SwiftUI.Color(uiColor: VIEW_BACKGROUND_COLOR))

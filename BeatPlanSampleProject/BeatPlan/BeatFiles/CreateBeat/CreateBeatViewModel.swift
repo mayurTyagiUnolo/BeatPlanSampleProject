@@ -15,6 +15,10 @@ extension CreateBeatView{
         var clientVisits: [Visit] = []
         var locationVisits: [Visit] = []
         
+        
+        @Published var showDeleteConfirmation: Bool = false
+        @Published var visitToDelete: Visit?
+        
         init(beat: Beat? = nil, beatCDHelperObj: BeatCDHelper){
             self.beatCDHelperObj = beatCDHelperObj
             // Assign new Beat obj in case of fresh beat creation.
@@ -23,7 +27,7 @@ extension CreateBeatView{
                                      status: Utils.beatApprovalRequired ? Beat.Status.pending.rawValue : Beat.Status.notRequired.rawValue,
                                      isDeleted: 0,
                                      mainOrStaged: Utils.beatApprovalRequired ? Beat.MainOrStaged.staged.rawValue : Beat.MainOrStaged.main.rawValue ,
-                                     visitList: [Utils.visit],
+                                     visitList: Utils.visit,
                                      createdTs: "SSDate.getStringCurrentTimeStampInMS()",
                                      lastModifiedTs: "SSDate.getStringCurrentTimeStampInMS()")
             
@@ -99,6 +103,14 @@ extension CreateBeatView{
             let beatName = beat.beatName.trimmingCharacters(in: .whitespacesAndNewlines)
             let visitList = beat.visitList
             return beatName.isEmpty || visitList.isEmpty
+        }
+        
+        func deleteVisit(visit: Visit) {
+            withAnimation {
+                if let index = beat.visitList.firstIndex(where: { $0.beatVisitID == visit.beatVisitID }) {
+                    beat.visitList.remove(at: index)
+                }
+            }
         }
         
     }
