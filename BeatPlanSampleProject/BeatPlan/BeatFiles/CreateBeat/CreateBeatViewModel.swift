@@ -109,6 +109,7 @@ extension CreateBeatView{
             withAnimation {
                 if let index = beat.visitList.firstIndex(where: { $0.beatVisitID == visit.beatVisitID }) {
                     beat.visitList.remove(at: index)
+                    objectWillChange.send()
                 }
             }
         }
