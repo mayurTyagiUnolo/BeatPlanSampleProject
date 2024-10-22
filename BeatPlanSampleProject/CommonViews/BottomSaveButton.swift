@@ -34,6 +34,30 @@ struct BottomSaveButton: View {
     }
 }
 
+struct SecondaryButton: View{
+    var buttonTitle: String
+    var image: String?
+    
+    var body: some View{
+        HStack{
+            Text(buttonTitle)
+            
+            if let image{
+                Image(image)
+            }
+        }
+        .fontWeight(.medium)
+        .foregroundStyle(.blue)
+        .padding(.horizontal, 12)
+        .padding(.vertical, 5)
+        .overlay(
+            Capsule()
+                .stroke(.blue, lineWidth: 1)
+        )
+    }
+}
+
+
 #Preview {
-    BottomSaveButton(buttonTitle: "Save", completionHandler: {})
+    SecondaryButton(buttonTitle: "Optimize")
 }

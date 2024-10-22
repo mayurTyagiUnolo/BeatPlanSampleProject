@@ -11,13 +11,13 @@ extension CreateBeatView{
     class ViewModel: ObservableObject{
         var beatCDHelperObj: BeatCDHelper
         @Published var beat: Beat
+        @Published var showDeleteConfirmation: Bool = false
+        @Published var visitToDelete: Visit?
         
         var clientVisits: [Visit] = []
         var locationVisits: [Visit] = []
         
-        
-        @Published var showDeleteConfirmation: Bool = false
-        @Published var visitToDelete: Visit?
+        //        var customTasks: [String: String]
         
         init(beat: Beat? = nil, beatCDHelperObj: BeatCDHelper){
             self.beatCDHelperObj = beatCDHelperObj
@@ -27,7 +27,7 @@ extension CreateBeatView{
                                      status: Utils.beatApprovalRequired ? Beat.Status.pending.rawValue : Beat.Status.notRequired.rawValue,
                                      isDeleted: 0,
                                      mainOrStaged: Utils.beatApprovalRequired ? Beat.MainOrStaged.staged.rawValue : Beat.MainOrStaged.main.rawValue ,
-                                     visitList: Utils.visit,
+                                     visitList: [],
                                      createdTs: "SSDate.getStringCurrentTimeStampInMS()",
                                      lastModifiedTs: "SSDate.getStringCurrentTimeStampInMS()")
             
@@ -39,6 +39,18 @@ extension CreateBeatView{
                     clientVisits.append(visit)
                 }
             }
+            
+            
+//            if let customTaskMetaData = Utils.customEntityMetaData{
+//                for task in customTaskMetaData{
+//                    if let taskID = task.customEntityID{
+//                        customTasks[taskID] = task.customEntityName
+//                    }
+//                }
+//            }else{
+//                self.customTasks = [:]
+//            }
+            
         }
         
         // code for added visit from the selected clients from the
@@ -51,7 +63,7 @@ extension CreateBeatView{
                                   visitAddress: client.address ?? "",
                                   visitName: client.clientName ?? "",
                                   lat:  0,
-                                  lon:0,
+                                  lon: 0,
                                   radius: 200,
                                   clientID: client.clientID,
                                   startTime: nil,
@@ -65,6 +77,8 @@ extension CreateBeatView{
                 
                 clientVisits.append(visit)
             }
+            
+            self.beat.visitList = clientVisits + locationVisits
         }
         
         func locationAdded(selectedLocations: [Location]){
@@ -85,11 +99,12 @@ extension CreateBeatView{
                                   sequence: 1,
                                   isDeleted: Beat.IsDeleted.no.rawValue,
                                   mainOrStaged: Utils.beatApprovalRequired ? Beat.MainOrStaged.staged.rawValue : Beat.MainOrStaged.main.rawValue,
-                                  createdTs: "SSDate.getStringCurrentTimeStampInMS()",
-                                  lastModifiedTs: "SSDate.getStringCurrentTimeStampInMS()")
+                                  createdTs: "",
+                                  lastModifiedTs: "")
                 
                 locationVisits.append(visit)
             }
+            self.beat.visitList = clientVisits + locationVisits
         }
         
         func saveButtonTapped(){
@@ -98,6 +113,7 @@ extension CreateBeatView{
 //                self.beatCDHelperObj.saveBeat(beat: beat)
             }
         }
+     
         
         func saveBtnShouldBeDisabled() -> Bool{
             let beatName = beat.beatName.trimmingCharacters(in: .whitespacesAndNewlines)

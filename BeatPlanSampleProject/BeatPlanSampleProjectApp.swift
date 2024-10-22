@@ -13,8 +13,9 @@ struct BeatPlanSampleProjectApp: App {
     var body: some Scene {
         WindowGroup {
             NavigationStack{
-                BeatListView(viewModel: BeatListView.ViewModel(beatCDHelperObj: BeatCDHelper.shared))
-//                CreateBeatView(viewModel: CreateBeatView.ViewModel(beatCDHelperObj: BeatCDHelper.shared))
+//                BeatListView()
+//                BeatListView(viewModel: BeatListView.ViewModel(beatCDHelperObj: BeatCDHelper.shared))
+                CreateBeatView(viewModel: CreateBeatView.ViewModel(beatCDHelperObj: BeatCDHelper.shared))
             }
         }
     }
