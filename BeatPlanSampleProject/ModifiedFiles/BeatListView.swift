@@ -60,10 +60,7 @@ struct BeatListView: View {
                         }
                         
                     }
-//                    .frame(maxWidth: .infinity, minHeight: 40)
                     .frame(maxWidth: .infinity, minHeight: 25, maxHeight: .infinity)
-//                    .padding(.vertical, 8)
-//                    .frame(maxWidth: .infinity)
                     .background(.gray.opacity(0.1))
                     .clipShape(
                         .rect(
@@ -86,12 +83,12 @@ struct BeatListView: View {
                         }
                         
                         
-                        if false{
+                        if true{
                             VStack(alignment: .leading, spacing: 0){
                                 Divider()
                                 
-                                Text("Remark: Every Remark: Every thing is fine.Every Remark: Every thing is fine.Every Remark: Every thing is fine.Every Remark: Every thing is fine.Every Remark: Every thing is fine.Every Remark: Every thing is fine.Every Remark: Every thing is fine.Every Remark: Every thing is fine.Every Remark: Every thing is fine.Every Remark: Every thing is fine.Every Remark: Every thing is fine.Every Remark: Every thing is fine.Every Remark: Every thing is fine.Every Remark: Every thing is fine.Every Remark: Every thing is fine.Every Remark: Every thing is fine.Every Remark: Every thing is fine.Every Remark: Every thing is fine.Every Remark: Every thing is fine.Every Remark: Every thing is fine.")
-//                                Text("Remark: Every Remark: Every thing is fine.")
+                                Text("Remark: Every thing is not fine.")
+                                    .lineLimit(1)
                                     .padding(.leading)
                                     .padding(.top, 10)
                                     .font(.footnote)

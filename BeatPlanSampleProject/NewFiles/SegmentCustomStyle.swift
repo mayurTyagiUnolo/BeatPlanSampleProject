@@ -11,26 +11,30 @@ struct SegmentCustomStyle: View {
     let options: [String]
     
     var body: some View {
-        HStack(spacing: 0){
+        HStack(spacing: 0) {
             ForEach(options.indices, id: \.self) { index in
-                VStack{
+                VStack(spacing: 4) {
                     Text(options[index])
-                        .foregroundColor(selection == index ? Color.blue : Color.gray)
+                        .foregroundColor(selection == index ? .blue : .gray)
+                        .fontWeight(selection == index ? .medium : .regular)
+                        .transaction { $0.animation = nil }
                         .onTapGesture {
-                            withAnimation {
+                            withAnimation { // Trigger animation for color and rectangle
                                 selection = index
                             }
                         }
                     
-                    if selection == index {
-                        Rectangle()
-                            .fill(.blue)
-                            .frame(height: 1)
-                            
-                    }
+                    Rectangle()
+                        .fill(selection == index ? .blue : .clear) // Animate the rectangle fill color
+                        .frame(height: 2)
+                        .animation(.easeInOut, value: selection) // Animate the color transition
                 }
                 .frame(maxWidth: .infinity)
             }
         }
     }
+}
+
+#Preview {
+    SegmentCustomStyle(selection: .constant(0), options: ["0", "1", "2"])
 }
