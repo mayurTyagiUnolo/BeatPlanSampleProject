@@ -15,7 +15,9 @@ struct BeatPlanSampleProjectApp: App {
             NavigationStack{
 //                BeatListView()
 //                BeatListView(viewModel: BeatListView.ViewModel(beatCDHelperObj: BeatCDHelper.shared))
-                CreateBeatView(viewModel: CreateBeatView.ViewModel(beatCDHelperObj: BeatCDHelper.shared))
+//                CreateBeatView(viewModel: CreateBeatView.ViewModel(beatCDHelperObj: BeatCDHelper.shared))
+                
+                BeatDetailView(beat: Utils.beat)
             }
         }
     }

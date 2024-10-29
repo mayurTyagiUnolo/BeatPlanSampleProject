@@ -33,4 +33,6 @@ class Utils {
         }
         return visitList
     }
+    
+    static let beat = Beat(beatID: UUID().uuidString, beatName: "Beat 1", status: 1, isDeleted: 0, mainOrStaged: 1, visitList: Utils.getVisitList(), createdTs: "", lastModifiedTs: "")
 }
